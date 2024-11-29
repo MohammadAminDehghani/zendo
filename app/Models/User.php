@@ -19,6 +19,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'family',
+        'phone',
+        'address',
         'email',
         'password',
     ];
@@ -42,4 +45,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    public function createdEvents()
+    {
+        return $this->hasMany(Event::class, 'created_by');
+    }
+
+    public function joinedEvents()
+    {
+        return $this->belongsToMany(Event::class, 'event_participants')
+            ->withPivot('status')
+            ->withTimestamps();
+    }
 }
